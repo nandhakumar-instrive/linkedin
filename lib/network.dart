@@ -8,8 +8,16 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
 class Network {
-  static String? linkedinAuthCode =
-      'AQXAxXOByn6Y-RCzL-vidppxeD-3hrh6LIlXfqn-uET7rnoI6ySFfx7XnZen0ir5ztanxnUrbkwMI41McN7UO6o387xRpGU6AFR45sHj23uw8oBmlCr5XvHGJx5hlaLijg1W1VoSfYt-R8Kmm7GhB-qYZ_DzSqACVdxvxRn57Qc6bl7KFs-YgIngmgk4nuOD4bLXyARgmcewEwwliLvz_QL12oCvFFrfS3EQw6Uucus0HExoi4HrVjbCTpGhfFpSxeTU7TDn5vUZbZb-rTAW5X4e33-LsfFZ5KLxxqnKgv7KQvkm13oQ3Anf4p3W8OyJnMCqjhXkrEhP78UrNGf_aCH7M99f4A';
+  // http://localhost:5000/linkedinauth?code=AQQHfqSRWt0oiL_63ktpWbKWBH5QIfCnpqh4OjOiA-gecsEb_vg9GCPJ_np75h2j-djZLB5wClcAhufHzhw5zvJMR_jKfZxR6LnPg7pj8ndESRHwpxVZdq2tZH-CovwhDoV4mYmQe8p7CjhXjniyUU3l9HP-X1_0HEOn_wDVS9NPAwaGxe60o5evJOGSA5FPjbeN3hR1Nj0IXCvBPOQ&state=temperbor
+
+  // static String? linkedInCode;
+  static String? value;
+
+  // static String linkedInAuthLatest =
+  //     'AQQHfqSRWt0oiL_63ktpWbKWBH5QIfCnpqh4OjOiA-gecsEb_vg9GCPJ_np75h2j-djZLB5wClcAhufHzhw5zvJMR_jKfZxR6LnPg7pj8ndESRHwpxVZdq2tZH-CovwhDoV4mYmQe8p7CjhXjniyUU3l9HP-X1_0HEOn_wDVS9NPAwaGxe60o5evJOGSA5FPjbeN3hR1Nj0IXCvBPOQ';
+
+  // static String? linkedinAuthCode =
+  //     'AQXAxXOByn6Y-RCzL-vidppxeD-3hrh6LIlXfqn-uET7rnoI6ySFfx7XnZen0ir5ztanxnUrbkwMI41McN7UO6o387xRpGU6AFR45sHj23uw8oBmlCr5XvHGJx5hlaLijg1W1VoSfYt-R8Kmm7GhB-qYZ_DzSqACVdxvxRn57Qc6bl7KFs-YgIngmgk4nuOD4bLXyARgmcewEwwliLvz_QL12oCvFFrfS3EQw6Uucus0HExoi4HrVjbCTpGhfFpSxeTU7TDn5vUZbZb-rTAW5X4e33-LsfFZ5KLxxqnKgv7KQvkm13oQ3Anf4p3W8OyJnMCqjhXkrEhP78UrNGf_aCH7M99f4A';
   static final String callbackUrl = 'http://localhost:5000/linkedinauth';
 
   static final String clientId = '86aq5lrpzyiroa';
@@ -19,11 +27,6 @@ class Network {
   static Future signinWithLinkedIn() async {
     try {
       await Network.signInLinkedIn();
-      await Network.getLinkedinAuthCode(
-        'AQRYgdGv1UL5oy0Qzqg-SWf7tZOzTGiDf_-RlWGAQ7UuI42LnDSi4iLK02O3_y847vPG8CAQz2HIoloCflsiXiWNW3D6vdiOmK4OXsiaAW2AJn3uyNjjEElPkSnIph6fnh6xsfCnA4Ezd0cgrJOHXZ4VrugHHk49xmoiXUjzBUZDWUWRCsXxxd44Ao_O26IPgvexxwoOhdQ2zaMDxz8',
-      );
-      var userResponse = await Network.readLinkedinUser();
-      print('The user response is $userResponse');
     } catch (e, s) {
       print('Error is $e and the stack trace is $s');
     }
@@ -46,14 +49,16 @@ class Network {
     }
   }
 
-  static Future<LinkedinUser> readLinkedinUser() async => await handleResponse(
+  static Future<LinkedinUser> readLinkedinUser() async {
+    try {
+      return await handleResponse(
         await http.get(
           Uri.parse('https://api.linkedin.com/v2/me'),
 
           headers: {
             // 'Content-Type': 'application/x-www-form-urlencoded',
             // 'Accept': '*/*',
-            'Authorization': 'Bearer ${Network.linkedinAuthCode}'
+            'Authorization': 'Bearer ${Network.value}'
           },
           // ).timeout(timeOutDuration);// await
           // buildHttpResponse(
@@ -66,13 +71,18 @@ class Network {
           return LinkedinUser.fromMap(value);
         },
       );
+    } catch (e, s) {
+      print("the error is $e and the stack trace is $s");
+      throw 'The error is $e';
+    }
+  }
 
   // static Future<bool> checkIfUserExists(String userId) {}
 
   static Future<String?> getLinkedinAuthCode(String accessCode) async {
-    if (linkedinAuthCode != null && linkedinAuthCode!.isNotEmpty) {
-      return Future.value(linkedinAuthCode);
-    }
+    // if (linkedinAuthCode != null && linkedinAuthCode!.isNotEmpty) {
+    //   return Future.value(linkedinAuthCode);
+    // }
     Future<http.Response> returnResponse() async {
       print('Within the response field');
       try {
