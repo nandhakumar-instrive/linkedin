@@ -36,10 +36,18 @@ class FirstWidget extends StatelessWidget {
             context: context,
             builder: (builder) => AlertDialog(
               content: Container(
-                color: Colors.red,
-                height: 100,
-                width: 100,
-                child: CircularProgressIndicator(),
+                color: Colors.white,
+                // height: 100,
+                // width: 100,
+                child: Row(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('Loading...'),
+                  ],
+                ),
               ),
             ),
           );
