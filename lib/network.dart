@@ -103,7 +103,7 @@ class Network {
         );
       } catch (e, stackTarce) {
         print('The error is $e with stacktrace $stackTarce');
-        return http.Response('Dummy Response', 500);
+        throw 'The error is $e';
       }
     }
 

@@ -92,14 +92,15 @@ class FirstWidget extends StatelessWidget {
   }
 
   Future<String> futureFunction() async {
-    print("entered into future function with ${Network.value}");
+    print("entered into future function with code ${Network.value}");
     var linkedinAuthCode = await Network.getLinkedinAuthCode(
       Network.value ??
           'AQRYgdGv1UL5oy0Qzqg-SWf7tZOzTGiDf_-RlWGAQ7UuI42LnDSi4iLK02O3_y847vPG8CAQz2HIoloCflsiXiWNW3D6vdiOmK4OXsiaAW2AJn3uyNjjEElPkSnIph6fnh6xsfCnA4Ezd0cgrJOHXZ4VrugHHk49xmoiXUjzBUZDWUWRCsXxxd44Ao_O26IPgvexxwoOhdQ2zaMDxz8',
     );
-    Network.value = linkedinAuthCode;
     print(
         "the linked in auth code is $linkedinAuthCode and network value is  ${Network.value} equal to network.value ${linkedinAuthCode == Network.value}");
+
+    Network.value = linkedinAuthCode;
 
     var userResponse = await Network.readLinkedinUser();
     print('The user response is $userResponse');
